@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MVIH Value Chain</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            navy: { 50: '#f0f3f8', 100: '#dce3ef', 200: '#b9c7df', 300: '#8ea3c8', 400: '#6680b0', 500: '#3d5a8a', 600: '#2d4470', 700: '#1e3055', 800: '#152340', 900: '#0d1628' },
+            gold: { 50: '#fdf8ef', 100: '#f9ecd3', 200: '#f3d9a7', 300: '#e9be6e', 400: '#dfa440', 500: '#c48a2a', 600: '#9e6e20', 700: '#7a5518', 800: '#5c4013', 900: '#3e2b0d' }
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    body { margin: 0; padding: 0; font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState } = React;
+
+    const UsersIcon = ({ size = 24 }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+        <path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+      </svg>
+    );
+    const DatabaseIcon = ({ size = 24 }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/>
+      </svg>
+    );
+    const FlaskIcon = ({ size = 24 }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2"/>
+        <path d="M8.5 2h7"/><path d="M7 16.5h10"/>
+      </svg>
+    );
+    const ClipboardCheckIcon = ({ size = 24 }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect width="8" height="4" x="8" y="2" rx="1" ry="1"/>
+        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+        <path d="m9 14 2 2 4-4"/>
+      </svg>
+    );
+    const ActivityIcon = ({ size = 24 }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/>
+      </svg>
+    );
+    const TrendingUpIcon = ({ size = 24 }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>
+      </svg>
+    );
+    const ShieldIcon = ({ size = 24 }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>
+      </svg>
+    );
+    const DollarSignIcon = ({ size = 24 }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+      </svg>
+    );
+    const GlobeIcon = ({ size = 24 }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/>
+      </svg>
+    );
+    const ArrowDownIcon = ({ size = 24 }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 5v14"/><path d="m19 12-7 7-7-7"/>
+      </svg>
+    );
+    const RotateCcwIcon = ({ size = 24 }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>
+      </svg>
+    );
+    const ChevronDownIcon = ({ size = 24 }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="m6 9 6 6 6-6"/>
+      </svg>
+    );
+    const ChevronUpIcon = ({ size = 24 }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="m18 15-6-6-6 6"/>
+      </svg>
+    );
+
+    const stages = [
+      {
+        id: 1,
+        title: 'Population Engagement & Sample Acquisition',
+        short: 'Stage 1',
+        icon: UsersIcon,
+        pillar: 'Pillar 1',
+        number: '01',
+        revenue: null,
+        revenueTimeline: null,
+        activities: ['Community mapping', 'Ethical recruitment protocols', 'Sample collection (blood, serum, respiratory)', 'Demographic & clinical metadata capture'],
+        entities: ['Partner Hospitals', 'Taibah University', 'Weqaya', 'MVIH Foundation'],
+        flows: {
+          bio: 'Raw biological samples collected',
+          data: 'Demographic + clinical metadata',
+          financial: 'Cost center (Endowment funded)'
+        }
+      },
+      {
+        id: 2,
+        title: 'Biobank Curation & Data Enrichment',
+        short: 'Stage 2',
+        icon: DatabaseIcon,
+        pillar: 'Pillar 1',
+        number: '02',
+        revenue: 'Tiered data & sample access licensing',
+        revenueTimeline: 'Year 3–4',
+        activities: ['Sample processing & cold-chain storage', 'LIMS data structuring', 'Genomic sequencing (via KAUST)', 'ISBER accreditation'],
+        entities: ['MVIH Foundation (owner)', 'KAUST', 'Taibah University'],
+        flows: {
+          bio: 'Processed, aliquoted, stored samples',
+          data: 'Structured, searchable biobank dataset',
+          financial: 'Licensing revenue begins Year 3–4'
+        }
+      },
+      {
+        id: 3,
+        title: 'Translational Research & Discovery',
+        short: 'Stage 3',
+        icon: FlaskIcon,
+        pillar: 'Pillar 1',
+        number: '03',
+        revenue: 'R&D agreements, grants, IP licensing',
+        revenueTimeline: 'Year 3–5',
+        activities: ['Pathogen identification & characterization', 'Antigen design & target validation', 'Preclinical studies', 'Platform technology adaptation'],
+        entities: ['KAUST', 'Taibah University', 'International PIs', 'International Biotech'],
+        flows: {
+          bio: 'Biobank samples consumed for research',
+          data: 'Publications, patents, validated hypotheses',
+          financial: 'Grant funding + collaborative R&D revenue'
+        }
+      },
+      {
+        id: 4,
+        title: 'Clinical Trial Design & Regulatory Prep',
+        short: 'Stage 4',
+        icon: ClipboardCheckIcon,
+        pillar: 'Pillars 2 & 3',
+        number: '04',
+        revenue: 'Trial facilitation setup fees',
+        revenueTimeline: 'Year 2–3',
+        activities: ['Protocol design / feasibility review', 'Regulatory Sandbox submission', 'Site readiness assessments', 'GCP training & remediation'],
+        entities: ['MVIH Foundation', 'SFDA', 'International Sponsors', 'Partner Hospitals'],
+        flows: {
+          bio: 'Baseline immunological data from Biobank',
+          data: 'Regulatory dossier + trial-ready site package',
+          financial: 'Setup fees from sponsors'
+        }
+      },
+      {
+        id: 5,
+        title: 'Clinical Trial Execution & Data Generation',
+        short: 'Stage 5',
+        icon: ActivityIcon,
+        pillar: 'Pillar 2',
+        number: '05',
+        revenue: 'Per-patient fees, PM fees, analytics fees',
+        revenueTimeline: 'Year 2–3',
+        activities: ['Diverse participant recruitment', 'Phase II/III trial conduct', 'Clinical monitoring & pharmacovigilance', 'Long-term resident follow-up'],
+        entities: ['Partner Hospitals', 'International Sponsors', 'MVIH Foundation', 'SFDA'],
+        flows: {
+          bio: 'Trial samples → feed back to Biobank',
+          data: 'GCP-compliant diverse clinical dataset',
+          financial: 'Primary revenue engine'
+        }
+      },
+      {
+        id: 6,
+        title: 'Post-Trial Value Capture & Dissemination',
+        short: 'Stage 6',
+        icon: TrendingUpIcon,
+        pillar: 'All Pillars',
+        number: '06',
+        revenue: 'PV contracts, data licensing, training fees',
+        revenueTimeline: 'Year 4–6',
+        activities: ['Post-market pharmacovigilance', 'Scientific publications', 'Secondary data licensing', 'Training & capacity building'],
+        entities: ['MVIH Foundation', 'Partner Hospitals', 'KAUST / Taibah', 'International Sponsors'],
+        flows: {
+          bio: 'Enriched samples return to Biobank',
+          data: 'Publications, RWE data, training materials',
+          financial: 'Recurring contract revenue'
+        }
+      }
+    ];
+
+    const supportingFunctions = [
+      { title: 'Governance & Quality Assurance', icon: ShieldIcon, items: ['Ethics oversight', 'ISBER / ICH-GCP compliance', 'Internal & external audits'] },
+      { title: 'Financial Management & Revenue Ops', icon: DollarSignIcon, items: ['Endowment fund management', 'Budget tracking (SAR 30M)', 'Revenue collection & reporting'] },
+      { title: 'International Partnership & BD', icon: GlobeIcon, items: ['Partner identification & engagement', 'Trial pipeline development', 'Conference representation'] }
+    ];
+
+    const flowMeta = {
+      bio: { label: 'Biological Materials' },
+      data: { label: 'Data & Knowledge' },
+      financial: { label: 'Financial' }
+    };
+
+    function StageCard({ stage, isExpanded, onToggle }) {
+      const Icon = stage.icon;
+      return (
+        <div className={`bg-white rounded-xl border transition-all duration-300 ${isExpanded ? 'border-navy-300 shadow-lg' : 'border-gray-200 shadow-sm hover:shadow-md'}`}>
+          <div className="p-5 cursor-pointer" onClick={onToggle}>
+            <div className="flex items-start gap-4">
+              <div className="flex-shrink-0 flex flex-col items-center">
+                <span className="text-2xl font-bold text-navy-200">{stage.number}</span>
+              </div>
+              <div className="flex-shrink-0 bg-navy-600 p-2.5 rounded-lg text-white">
+                <Icon size={20} />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-0.5">
+                  <span className="text-xs font-semibold text-navy-400 uppercase tracking-wider">{stage.pillar}</span>
+                </div>
+                <h3 className="font-semibold text-gray-900 text-sm leading-snug">{stage.title}</h3>
+                {stage.revenue ? (
+                  <div className="mt-1.5 inline-flex items-center gap-1.5 bg-gold-50 border border-gold-200 rounded-full px-2.5 py-0.5">
+                    <span className="text-gold-600"><DollarSignIcon size={11} /></span>
+                    <span className="text-xs text-gold-700 font-medium">{stage.revenueTimeline}</span>
+                  </div>
+                ) : (
+                  <div className="mt-1.5">
+                    <span className="text-xs text-gray-400 italic">Endowment funded</span>
+                  </div>
+                )}
+              </div>
+              <div className="flex-shrink-0 text-gray-300 mt-1">
+                {isExpanded ? <ChevronUpIcon size={18} /> : <ChevronDownIcon size={18} />}
+              </div>
+            </div>
+          </div>
+
+          {isExpanded && (
+            <div className="px-5 pb-5 border-t border-gray-100 pt-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div>
+                  <p className="text-xs font-semibold text-navy-500 uppercase tracking-wider mb-2">Key Activities</p>
+                  <div className="space-y-1.5">
+                    {stage.activities.map((a, i) => (
+                      <div key={i} className="flex items-start gap-2.5">
+                        <div className="w-1.5 h-1.5 rounded-full bg-navy-300 mt-1.5 flex-shrink-0" />
+                        <span className="text-sm text-gray-600">{a}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <p className="text-xs font-semibold text-navy-500 uppercase tracking-wider mb-2">Responsible Entities</p>
+                  <div className="flex flex-wrap gap-1.5 mb-4">
+                    {stage.entities.map((e, i) => (
+                      <span key={i} className="text-xs bg-navy-50 border border-navy-100 rounded-full px-2.5 py-1 text-navy-600 font-medium">{e}</span>
+                    ))}
+                  </div>
+
+                  {stage.revenue && (
+                    <div>
+                      <p className="text-xs font-semibold text-navy-500 uppercase tracking-wider mb-1.5">Revenue Mechanism</p>
+                      <p className="text-sm text-gold-700 font-medium">{stage.revenue}</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="mt-4 pt-4 border-t border-gray-100">
+                <p className="text-xs font-semibold text-navy-500 uppercase tracking-wider mb-2.5">Value Flows</p>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                  {Object.entries(stage.flows).map(([key, value]) => (
+                    <div key={key} className="bg-gray-50 border border-gray-100 rounded-lg px-3 py-2.5">
+                      <p className="text-xs font-semibold text-navy-400 uppercase tracking-wider mb-1">{flowMeta[key].label}</p>
+                      <p className="text-xs text-gray-600 leading-relaxed">{value}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    function MVIHValueChain() {
+      const [expandedStage, setExpandedStage] = useState(null);
+
+      return (
+        <div className="bg-gray-50 min-h-screen">
+          {/* Header */}
+          <div className="bg-navy-800 text-white py-8 px-4">
+            <div className="max-w-4xl mx-auto text-center">
+              <p className="text-xs font-semibold text-gold-400 uppercase tracking-widest mb-2">Al Madinah Vaccine Innovation Hub</p>
+              <h1 className="text-2xl md:text-3xl font-bold mb-3">MVIH Value Chain</h1>
+              <p className="text-sm text-navy-200 max-w-2xl mx-auto leading-relaxed">End-to-end flow from population engagement through post-trial value capture — showing how biological materials, data, and financial value move through six primary stages.</p>
+            </div>
+          </div>
+
+          <div className="max-w-4xl mx-auto px-4 py-8">
+            {/* Flow Legend */}
+            <div className="flex flex-wrap justify-center gap-6 mb-8">
+              <div className="flex items-center gap-2">
+                <div className="w-2.5 h-2.5 rounded-full bg-navy-800" />
+                <span className="text-xs text-gray-500 font-medium">Biological Materials</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-2.5 h-2.5 rounded-full bg-navy-400" />
+                <span className="text-xs text-gray-500 font-medium">Data & Knowledge</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-2.5 h-2.5 rounded-full bg-gold-500" />
+                <span className="text-xs text-gray-500 font-medium">Financial</span>
+              </div>
+            </div>
+
+            {/* Feedback Banner */}
+            <div className="bg-white border border-navy-200 rounded-xl p-3.5 mb-6 flex items-center justify-center gap-3">
+              <span className="text-navy-400"><RotateCcwIcon size={16} /></span>
+              <span className="text-xs text-navy-600 font-medium text-center">Virtuous Cycle — Stage 6 outputs feed back into Stage 1, compounding hub value with each iteration</span>
+            </div>
+
+            {/* Stages */}
+            <div className="space-y-2 mb-10">
+              {stages.map((stage, index) => (
+                <div key={stage.id}>
+                  <StageCard
+                    stage={stage}
+                    isExpanded={expandedStage === stage.id}
+                    onToggle={() => setExpandedStage(expandedStage === stage.id ? null : stage.id)}
+                  />
+                  {index < stages.length - 1 && (
+                    <div className="flex justify-center py-1">
+                      <span className="text-navy-200"><ArrowDownIcon size={18} /></span>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Compounding Cycle */}
+            <div className="bg-white border border-dashed border-navy-200 rounded-xl p-4 mb-10 flex items-center justify-center gap-3">
+              <span className="text-gold-500"><RotateCcwIcon size={20} /></span>
+              <div className="text-center">
+                <p className="text-xs font-bold text-navy-700 uppercase tracking-wider">Compounding Cycle</p>
+                <p className="text-xs text-gray-500 mt-0.5">Trial samples enrich the Biobank → Richer Biobank attracts more research → More research attracts more trials</p>
+              </div>
+            </div>
+
+            {/* Supporting Functions */}
+            <div className="mb-10">
+              <h2 className="text-lg font-bold text-navy-800 mb-1 text-center">Supporting Functions</h2>
+              <p className="text-xs text-gray-400 text-center mb-5">Operate continuously across all six primary stages</p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                {supportingFunctions.map((sf, i) => {
+                  const Icon = sf.icon;
+                  return (
+                    <div key={i} className="bg-white border border-gray-200 rounded-xl p-4">
+                      <div className="flex items-center gap-2.5 mb-3">
+                        <div className="bg-navy-700 p-2 rounded-lg text-white">
+                          <Icon size={16} />
+                        </div>
+                        <h3 className="font-semibold text-sm text-navy-800">{sf.title}</h3>
+                      </div>
+                      <div className="space-y-1.5">
+                        {sf.items.map((item, j) => (
+                          <div key={j} className="flex items-start gap-2">
+                            <div className="w-1.5 h-1.5 rounded-full bg-navy-300 mt-1.5 flex-shrink-0" />
+                            <span className="text-xs text-gray-500">{item}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Revenue Timeline */}
+            <div className="bg-white border border-gray-200 rounded-xl p-6 mb-8">
+              <h2 className="text-lg font-bold text-navy-800 mb-5 text-center">Revenue Activation Timeline</h2>
+              <div className="relative">
+                <div className="flex items-center mb-6">
+                  {['Year 1', 'Year 2', 'Year 3', 'Year 4', 'Year 5', 'Year 6'].map((year, i) => (
+                    <div key={i} className="flex-1 text-center">
+                      <div className="relative">
+                        <div className={`h-2 ${i === 0 ? 'rounded-l-full' : ''} ${i === 5 ? 'rounded-r-full' : ''} ${i < 2 ? 'bg-navy-100' : i < 4 ? 'bg-navy-300' : 'bg-gold-400'}`} />
+                      </div>
+                      <span className="text-xs text-gray-400 mt-1 block font-medium">{year}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="space-y-2.5">
+                  <div className="flex items-center gap-2">
+                    <div className="w-24 md:w-32 text-xs text-gray-400 text-right flex-shrink-0 font-medium">Stages 4 & 5</div>
+                    <div className="flex-1 flex">
+                      <div className="w-1/6"></div>
+                      <div className="w-5/6 bg-navy-50 border border-navy-200 rounded-lg px-3 py-1.5">
+                        <span className="text-xs text-navy-700 font-medium">Trial facilitation fees — primary revenue engine</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-24 md:w-32 text-xs text-gray-400 text-right flex-shrink-0 font-medium">Stage 2</div>
+                    <div className="flex-1 flex">
+                      <div className="w-2/6"></div>
+                      <div className="w-4/6 bg-navy-50 border border-navy-200 rounded-lg px-3 py-1.5">
+                        <span className="text-xs text-navy-700 font-medium">Biobank data & sample licensing</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-24 md:w-32 text-xs text-gray-400 text-right flex-shrink-0 font-medium">Stage 3</div>
+                    <div className="flex-1 flex">
+                      <div className="w-2/6"></div>
+                      <div className="w-4/6 bg-navy-50 border border-navy-200 rounded-lg px-3 py-1.5">
+                        <span className="text-xs text-navy-700 font-medium">R&D agreements, grants, IP licensing</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-24 md:w-32 text-xs text-gray-400 text-right flex-shrink-0 font-medium">Stage 6</div>
+                    <div className="flex-1 flex">
+                      <div className="w-3/6"></div>
+                      <div className="w-3/6 bg-navy-50 border border-navy-200 rounded-lg px-3 py-1.5">
+                        <span className="text-xs text-navy-700 font-medium">PV contracts, data licensing, training</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex justify-center gap-6 mt-5 pt-4 border-t border-gray-100">
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-4 h-2 bg-navy-100 rounded-sm"></div>
+                    <span className="text-xs text-gray-400">Endowment funded</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-4 h-2 bg-navy-300 rounded-sm"></div>
+                    <span className="text-xs text-gray-400">Revenue emerging</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-4 h-2 bg-gold-400 rounded-sm"></div>
+                    <span className="text-xs text-gray-400">Sustainability target</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="text-center text-xs text-gray-300 pb-4">
+              MVIH Value Chain — Al Madinah Vaccine Innovation Hub
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    ReactDOM.render(<MVIHValueChain />, document.getElementById('root'));
+  </script>
+</body>
+</html>
